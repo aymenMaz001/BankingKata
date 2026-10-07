@@ -1,0 +1,1 @@
+﻿public readonly record struct StatementLine(DateOnly Date, decimal Amount, decimal Balance);

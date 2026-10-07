@@ -106,6 +106,8 @@ public class BanckAccountTests
 			t => Assert.Equal(3000, t.Balance),
 			t => Assert.Equal(2500, t.Balance));
 	}
+
+
 }
 
 internal sealed class FakeClock : IClock
