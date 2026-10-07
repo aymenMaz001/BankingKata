@@ -77,14 +77,14 @@ public class BanckAccountTests
 	}
 
 	[Fact]
-	public void Withdraw_ShouldRecordTransaction()
+	public void Withdraw_ShouldRecordNegativeTransaction()
 	{
 		var account = new BankAccount();
 
-		account.Withdraw(1000);
+		account.Deposit(1000);
+		account.Withdraw(500);
+		var transaction = account.Transactions.Last();
 
-		var transaction = Assert.Single(account.Transactions);
-
-		Assert.Equal(-1000, transaction.Amount);
+		Assert.Equal(-500, transaction.Amount);
 	}
 }
