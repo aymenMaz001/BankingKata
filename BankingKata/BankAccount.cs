@@ -26,5 +26,6 @@ internal class BankAccount
 				nameof(amount),
 				"Withdraw amount must be greater than zero.");
 		Balance -= amount;
+		_transactions.Add(new Transaction(DateTime.Today, -amount));
 	}
 }

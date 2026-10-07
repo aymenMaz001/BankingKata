@@ -75,4 +75,16 @@ public class BanckAccountTests
 
 		Assert.Equal(1000, transaction.Amount);
 	}
+
+	[Fact]
+	public void Withdraw_ShouldRecordTransaction()
+	{
+		var account = new BankAccount();
+
+		account.Withdraw(1000);
+
+		var transaction = Assert.Single(account.Transactions);
+
+		Assert.Equal(-1000, transaction.Amount);
+	}
 }
