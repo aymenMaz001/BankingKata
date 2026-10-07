@@ -63,4 +63,16 @@ public class BanckAccountTests
 
 		Assert.Equal("amount", exception.ParamName);
 	}
+
+	[Fact]
+	public void Deposit_ShouldRecordTransaction()
+	{
+		var account = new BankAccount();
+
+		account.Deposit(1000);
+
+		var transaction = Assert.Single(account._transactions);
+
+		Assert.Equal(1000, transaction.Amount);
+	}
 }

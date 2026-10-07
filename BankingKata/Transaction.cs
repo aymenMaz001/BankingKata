@@ -1,0 +1,1 @@
+﻿public record Transaction(DateTime Date, decimal Amount);

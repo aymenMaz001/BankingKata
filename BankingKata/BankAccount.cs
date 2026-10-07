@@ -1,9 +1,12 @@
 ﻿
+using System.Collections;
+
 namespace BankingKata;
 
 internal class BankAccount
 {
 	public decimal Balance { get; private set; }
+	public readonly List<Transaction> _transactions = [];
 
 	public void Deposit(decimal amount)
 	{
