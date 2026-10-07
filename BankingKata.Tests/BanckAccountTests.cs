@@ -2,36 +2,38 @@ namespace BankingKata.Tests;
 
 public class BanckAccountTests
 {
+	private readonly FakeClock _clock = new(new DateOnly(2026, 1, 10));
+	private readonly BankAccount _account;
+
+	public BanckAccountTests()
+	{
+		_clock = new FakeClock(new DateOnly(2026, 1, 10));
+		_account = new BankAccount(_clock);
+	}
+
 	[Fact]
 	public void Deposit_ShouldIncreaseBalance()
 	{
-		var account = new BankAccount();
-
-		account.Deposit(1000);
-
-		Assert.Equal(1000, account.Balance);
+		_account.Deposit(1000);
+		Assert.Equal(1000, _account.Balance);
 	}
 
 	[Fact]
 	public void MultipleDeposits_ShouldAccumulateBalance()
 	{
-		var account = new BankAccount();
+		_account.Deposit(1000);
+		_account.Deposit(2000);
 
-		account.Deposit(1000);
-		account.Deposit(2000);
-
-		Assert.Equal(3000, account.Balance);
+		Assert.Equal(3000, _account.Balance);
 	}
 
 	[Fact]
 	public void Withdraw_ShouldDecreaseBalance()
 	{
-		var account = new BankAccount();
+		_account.Deposit(1000);
+		_account.Withdraw(400);
 
-		account.Deposit(1000);
-		account.Withdraw(400);
-
-		Assert.Equal(600, account.Balance);
+		Assert.Equal(600, _account.Balance);
 	}
 
 	[Theory]
@@ -41,10 +43,8 @@ public class BanckAccountTests
 	public void Deposit_WhenAmountIsNotPositive_ShouldThrowArgumentOutOfRangeException(
 	decimal amount)
 	{
-		var account = new BankAccount();
-
 		var exception = Assert.Throws<ArgumentOutOfRangeException>(
-			() => account.Deposit(amount));
+			() => _account.Deposit(amount));
 
 		Assert.Equal("amount", exception.ParamName);
 	}
@@ -56,10 +56,8 @@ public class BanckAccountTests
 	public void Withdraw_WhenAmountIsNotPositive_ShouldThrowArgumentOutOfRangeException(
 	decimal amount)
 	{
-		var account = new BankAccount();
-
 		var exception = Assert.Throws<ArgumentOutOfRangeException>(
-			() => account.Withdraw(amount));
+			() => _account.Withdraw(amount));
 
 		Assert.Equal("amount", exception.ParamName);
 	}
@@ -67,11 +65,9 @@ public class BanckAccountTests
 	[Fact]
 	public void Deposit_ShouldRecordTransaction()
 	{
-		var account = new BankAccount();
+		_account.Deposit(1000);
 
-		account.Deposit(1000);
-
-		var transaction = Assert.Single(account.Transactions);
+		var transaction = Assert.Single(_account.Transactions);
 
 		Assert.Equal(1000, transaction.Amount);
 	}
@@ -79,12 +75,20 @@ public class BanckAccountTests
 	[Fact]
 	public void Withdraw_ShouldRecordNegativeTransaction()
 	{
-		var account = new BankAccount();
-
-		account.Deposit(1000);
-		account.Withdraw(500);
-		var transaction = account.Transactions.Last();
+		_account.Deposit(1000);
+		_account.Withdraw(500);
+		var transaction = _account.Transactions.Last();
 
 		Assert.Equal(-500, transaction.Amount);
 	}
+}
+
+internal sealed class FakeClock : IClock
+{
+	public FakeClock(DateOnly today)
+	{
+		Today = today;
+	}
+
+	public DateOnly Today { get; set; }
 }

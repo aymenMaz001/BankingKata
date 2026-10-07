@@ -8,19 +8,25 @@ internal class BankAccount
 	public decimal Balance { get; private set; }
 	private readonly List<Transaction> _transactions = [];
 	public IReadOnlyList<Transaction> Transactions => _transactions;
+	private readonly IClock _clock;
+
+	public BankAccount(IClock clock)
+	{
+		_clock = clock;
+	}
 
 	public void Deposit(decimal amount)
 	{
 		ValidateAmount(amount);
 		Balance += amount;
-		_transactions.Add(new Transaction(DateTime.Today,amount));
+		_transactions.Add(new Transaction(_clock.Today,amount));
 	}
 
 	internal void Withdraw(decimal amount)
 	{
 		ValidateAmount(amount);
 		Balance -= amount;
-		_transactions.Add(new Transaction(DateTime.Today, -amount));
+		_transactions.Add(new Transaction(_clock.Today, -amount));
 	}
 
 	private static void ValidateAmount(decimal amount)
