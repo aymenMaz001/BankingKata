@@ -11,21 +11,21 @@ internal class BankAccount
 
 	public void Deposit(decimal amount)
 	{
-		if (amount <= 0)
-			throw new ArgumentOutOfRangeException(
-				nameof(amount),
-				"Deposit amount must be greater than zero.");
+		ValidateAmount(amount);
 		Balance += amount;
 		_transactions.Add(new Transaction(DateTime.Today,amount));
 	}
 
 	internal void Withdraw(decimal amount)
 	{
-		if (amount <= 0)
-			throw new ArgumentOutOfRangeException(
-				nameof(amount),
-				"Withdraw amount must be greater than zero.");
+		ValidateAmount(amount);
 		Balance -= amount;
 		_transactions.Add(new Transaction(DateTime.Today, -amount));
+	}
+
+	private static void ValidateAmount(decimal amount)
+	{
+		if (amount <= 0)
+			throw new ArgumentOutOfRangeException(nameof(amount),"Amount must be greater than zero.");
 	}
 }
