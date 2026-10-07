@@ -15,7 +15,9 @@ public class BanckAccountTests
 	public void Deposit_ShouldIncreaseBalance()
 	{
 		_account.Deposit(1000);
-		Assert.Equal(1000, _account.Balance);
+		var transaction = Assert.Single(_account.Transactions);
+
+		Assert.Equal(1000, transaction.Amount);
 	}
 
 	[Fact]
@@ -34,6 +36,7 @@ public class BanckAccountTests
 		_account.Withdraw(400);
 
 		Assert.Equal(600, _account.Balance);
+
 	}
 
 	[Theory]
@@ -88,6 +91,20 @@ public class BanckAccountTests
 		_account.Deposit(1000);
 
 		Assert.Equal(new DateOnly(2026, 1, 10),_account.Transactions.Single().Date);
+	}
+
+	[Fact]
+	public void Transactions_ShouldContainRunningBalance()
+	{
+		_account.Deposit(1000);
+		_account.Deposit(2000);
+		_account.Withdraw(500);
+
+		Assert.Collection(
+			_account.Transactions,
+			t => Assert.Equal(1000, t.Balance),
+			t => Assert.Equal(3000, t.Balance),
+			t => Assert.Equal(2500, t.Balance));
 	}
 }
 

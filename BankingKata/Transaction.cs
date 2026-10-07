@@ -1,1 +1,1 @@
-﻿public record Transaction(DateOnly Date, decimal Amount);
+﻿public record Transaction(DateOnly Date, decimal Amount, decimal Balance);
