@@ -6,7 +6,8 @@ namespace BankingKata;
 internal class BankAccount
 {
 	public decimal Balance { get; private set; }
-	public readonly List<Transaction> _transactions = [];
+	private readonly List<Transaction> _transactions = [];
+	public IReadOnlyList<Transaction> Transactions => _transactions;
 
 	public void Deposit(decimal amount)
 	{
@@ -15,6 +16,7 @@ internal class BankAccount
 				nameof(amount),
 				"Deposit amount must be greater than zero.");
 		Balance += amount;
+		_transactions.Add(new Transaction(DateTime.Today,amount));
 	}
 
 	internal void Withdraw(decimal amount)

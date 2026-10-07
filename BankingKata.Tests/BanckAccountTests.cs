@@ -71,7 +71,7 @@ public class BanckAccountTests
 
 		account.Deposit(1000);
 
-		var transaction = Assert.Single(account._transactions);
+		var transaction = Assert.Single(account.Transactions);
 
 		Assert.Equal(1000, transaction.Amount);
 	}
