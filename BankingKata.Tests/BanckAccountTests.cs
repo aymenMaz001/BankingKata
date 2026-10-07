@@ -81,6 +81,14 @@ public class BanckAccountTests
 
 		Assert.Equal(-500, transaction.Amount);
 	}
+
+	[Fact]
+	public void Deposit_ShouldRecordTransactionDate()
+	{
+		_account.Deposit(1000);
+
+		Assert.Equal(new DateOnly(2026, 1, 10),_account.Transactions.Single().Date);
+	}
 }
 
 internal sealed class FakeClock : IClock
