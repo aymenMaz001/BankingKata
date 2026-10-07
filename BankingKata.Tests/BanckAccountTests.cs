@@ -33,4 +33,34 @@ public class BanckAccountTests
 
 		Assert.Equal(600, account.Balance);
 	}
+
+	[Theory]
+	[InlineData(0)]
+	[InlineData(-1)]
+	[InlineData(-500)]
+	public void Deposit_WhenAmountIsNotPositive_ShouldThrowArgumentOutOfRangeException(
+	decimal amount)
+	{
+		var account = new BankAccount();
+
+		var exception = Assert.Throws<ArgumentOutOfRangeException>(
+			() => account.Deposit(amount));
+
+		Assert.Equal("amount", exception.ParamName);
+	}
+
+	[Theory]
+	[InlineData(0)]
+	[InlineData(-1)]
+	[InlineData(-500)]
+	public void Withdraw_WhenAmountIsNotPositive_ShouldThrowArgumentOutOfRangeException(
+	decimal amount)
+	{
+		var account = new BankAccount();
+
+		var exception = Assert.Throws<ArgumentOutOfRangeException>(
+			() => account.Withdraw(amount));
+
+		Assert.Equal("amount", exception.ParamName);
+	}
 }
