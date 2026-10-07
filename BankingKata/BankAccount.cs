@@ -1,4 +1,5 @@
-﻿namespace BankingKata;
+﻿
+namespace BankingKata;
 
 internal class BankAccount
 {
@@ -7,5 +8,10 @@ internal class BankAccount
 	public void Deposit(decimal amount)
 	{
 		Balance += amount;
+	}
+
+	internal void Withdraw(decimal amount)
+	{
+		throw new NotImplementedException();
 	}
 }
