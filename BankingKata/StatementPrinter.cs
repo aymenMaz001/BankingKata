@@ -1,4 +1,6 @@
 ﻿
+using System.Text;
+
 namespace BankingKata;
 
 internal class StatementPrinter
@@ -6,14 +8,19 @@ internal class StatementPrinter
 	private const string Header = "DATE | AMOUNT | BALANCE";
 	internal string Print(IEnumerable<Transaction> transactions)
 	{
-		var statement = Header;
+		var statement = new StringBuilder(Header);
 
-		foreach (var transaction in transactions.OrderByDescending(d => d.Date))
+		foreach (var transaction in transactions.OrderByDescending(t => t.Date))
 		{
-			statement += Environment.NewLine;
-			statement += $"{transaction.Date:dd/MM/yyyy} | {transaction.Amount} | {transaction.Balance}";
+			statement
+				.AppendLine()
+				.Append(transaction.Date.ToString("dd/MM/yyyy"))
+				.Append(" | ")
+				.Append(transaction.Amount)
+				.Append(" | ")
+				.Append(transaction.Balance);
 		}
 
-		return statement;
+		return statement.ToString();
 	}
 }
