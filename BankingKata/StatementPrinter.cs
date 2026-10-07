@@ -8,12 +8,10 @@ internal class StatementPrinter
 	{
 		var statement = Header;
 
-		foreach (var transaction in transactions)
+		foreach (var transaction in transactions.OrderByDescending(d => d.Date))
 		{
-			statement += Environment.NewLine +
-						 $"{transaction.Date:dd/MM/yyyy} | " +
-						 $"{transaction.Amount} | " +
-						 $"{transaction.Balance}";
+			statement += Environment.NewLine;
+			statement += $"{transaction.Date:dd/MM/yyyy} | {transaction.Amount} | {transaction.Balance}";
 		}
 
 		return statement;
